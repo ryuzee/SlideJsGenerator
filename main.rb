@@ -3,6 +3,8 @@ require "digest/md5"
 require 'fileutils'
 require 'erb'
 require './util.rb'
+require './js_generator.rb'
+require './environment.rb'
 
 option = {}
 OptionParser.new do |opt|
@@ -22,38 +24,16 @@ unless ext.downcase == '.pdf'
 end
 
 base = Digest::MD5.hexdigest(File.basename(option[:filename]))
-@prefix = base
 dest_path = "#{__dir__}/output/#{base}"
 FileUtils.mkdir_p(dest_path)
 
 FileUtils.copy(option[:filename], "#{dest_path}/#{base}.pdf")
 
 pdf_to_ppm(dest_path, "#{base}.pdf")
-@slide_list = ppm_to_jpg(dest_path)
+slide_list = ppm_to_jpg(dest_path)
 
-template_css = File.read("#{__dir__}/template/css.erb")
-erb_css = ERB.new(template_css)
-@str_css = erb_css.result(binding)
+JsGenerator.new.generate(dest_path, base, slide_list)
 
-template_js = File.read("#{__dir__}/template/javascript.erb")
-erb_js = ERB.new(template_js)
-@str_js = erb_js.result(binding)
-
-template = File.read("#{__dir__}/template/body.erb")
-erb = ERB.new(template)
-body = erb.result(binding)
-js = generate_js(body, base)
-
-File.open("#{dest_path}/#{base}.js", mode = "w"){|f|
-  f.write(js)
-}
-
-get_local_file_list(dest_path, '.pdf').each do |f|
-  FileUtils.rm_f(f)
-end
-
-get_local_file_list(dest_path, '.ppm').each do |f|
-  FileUtils.rm_f(f)
-end
+Environment.new.clean(dest_path)
 
 exit 0
