@@ -1,7 +1,6 @@
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <% page_list = @slide_list %>
 <% prefix = @prefix %>
-<%= @str_css %>
 <div>
   <ul style="display:none" id="<%= prefix %>slide_list">
     <% page_list.each do |f| %>
@@ -29,7 +28,3 @@
     </div>
   </div>
 </div>
-
-<% s = @str_js %>
-
-<%= s.gsub('OSSJSPARTS', "OSSJSPARTS#{prefix}").gsub('PREFIX', prefix) %>
