@@ -23,7 +23,7 @@
     findLi = findUl.children;
     for (var i = 0; i < findLi.length; i++){
       var img = findLi[i].getElementsByTagName("img")[0];
-      var p = current.replace(OSSJSPARTS.classPrefix + ".js", img.getAttribute("data-original"));
+      var p = current_PREFIX.replace(OSSJSPARTS.classPrefix + ".js", img.getAttribute("data-original"));
       OSSJSPARTS.slides.push(p);
     }
     if (eid(OSSJSPARTS.addCssPrefix("slide_image")) == null) {

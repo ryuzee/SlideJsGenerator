@@ -35,7 +35,7 @@ end
 
 def generate_js(text, prefix)
   script = <<"EOS"
-var current = (function() {
+var current_#{prefix} = (function() {
     if (document.currentScript) {
         return document.currentScript.src;
     } else {
