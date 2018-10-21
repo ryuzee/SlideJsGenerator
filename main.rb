@@ -26,13 +26,9 @@ end
 base = Digest::MD5.hexdigest(File.basename(option[:filename]))
 dest_path = "#{__dir__}/output/#{base}"
 FileUtils.mkdir_p(dest_path)
-
 FileUtils.copy(option[:filename], "#{dest_path}/#{base}.pdf")
 
-pdf_to_ppm(dest_path, "#{base}.pdf")
-slide_list = ppm_to_jpg(dest_path)
-
-JsGenerator.new.generate(dest_path, base, slide_list)
+JsGenerator.new.generate(dest_path, base)
 
 Environment.new.clean(dest_path)
 
